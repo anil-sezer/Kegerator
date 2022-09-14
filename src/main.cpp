@@ -10,7 +10,6 @@
 OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature.
 DallasTemperature sensors(&oneWire);
-int count = 0;
 
 // RELAY
 int relay = 8;
@@ -19,16 +18,11 @@ volatile byte relayState = LOW;
 // DISPLAY
 int CLK = 3;
 int DIO = 4;
-
 TM1637 tm(CLK,DIO);
 
 // GENERIC
-long fiveMinDelay = 300000;
-int fiveSecDelay = 5000;
 int oneSecond = 1000;
 long oneMinute = 60000;
-#define MIN 0
-#define MAX 1
 float prevtemp = 0.0;
 
 void triggerTheFridge(float temp);
@@ -107,9 +101,7 @@ float getTemp(void){
   // request to all devices on the bus
   sensors.requestTemperatures(); // Send the command to get temperatures
   float temp = sensors.getTempCByIndex(0);
-  Serial.print("Temp: ");
-  Serial.print(temp);
-  Serial.println("");
+  Serial.println("Temp: " + String(temp, 3));
 
   return temp;
 }
@@ -142,27 +134,25 @@ void setDisplay(int currentTemp, int prevTemp){
 }
 
 void triggerTheFridge(float temp){
-  if (temp < 0)
-  {
-    digitalWrite(relay, LOW);
-    Serial.println("ERROR: Temperature is too low, is there a connectivity issue? Kegerator will shut down. Temp: " + String(temp, 3));
-  }
-  if (temp > 35)
-  {
-    digitalWrite(relay, LOW);
-    Serial.println("ERROR: Temperature is too high, is there a connectivity issue? Kegerator will shut down. Temp: " + String(temp, 3));
-  }
-  else if (temp > 20 && temp < 23)
+
+  float idealMinimum = 20;
+  float idealMaximum = 23;
+
+  if (temp > idealMinimum && temp < idealMaximum)
   {
     digitalWrite(relay, LOW);
     Serial.println("Temperature is in the ideal range. Temp: " + String(temp, 3));
   }
-  else if (temp <= 18)
+  else if(temp < 10 || temp > 30){
+    digitalWrite(relay, LOW);
+    Serial.println("Looks like a buggy temp, suspend. Temp: " + String(temp, 3));
+  }
+  else if (temp < idealMinimum)
   {
     digitalWrite(relay, LOW);
     Serial.println("Temperature is low, suspend. Temp: " + String(temp, 3));
   }
-  else if (temp >= 25)
+  else if (temp > idealMaximum)
   {
     Serial.println("Temperature is too high, start. Temp: " + String(temp, 3));
     digitalWrite(relay, HIGH);
