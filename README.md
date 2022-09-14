@@ -5,7 +5,7 @@
 [These guys](https://www.youtube.com/watch?v=NYXgHiSoJ4s) inspired me to make a kegerator out of a mini fridge.
 
 Since one of my kittens chewn the temperature sensors cable and made its readings unstable, I added a nice error handling mechanism in this. 
-If your sensor gives you -127, 85°C because of connectivity issues, this might fix it.
+If your sensor gives you -127, 85°C or something similar because of connectivity issues, this might fix it.
 
 ## Devices Used:
 
