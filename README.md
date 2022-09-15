@@ -1,6 +1,7 @@
 # Kegerator
 ### A mini fridge converted into a kegerator controlled by Arduino nano
 
+![My solderless setups picture](solderless_setup.jpg)
 
 [These guys](https://www.youtube.com/watch?v=dwCPdNMmdhk) inspired me to make a kegerator out of a mini fridge.
 
