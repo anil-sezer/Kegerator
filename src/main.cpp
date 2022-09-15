@@ -143,7 +143,7 @@ void triggerTheFridge(float temp){
     digitalWrite(relay, LOW);
     Serial.println("Temperature is in the ideal range. Temp: " + String(temp, 3));
   }
-  else if(temp < 10 || temp > 30){
+  else if(temp < 10 || temp > 40){
     digitalWrite(relay, LOW);
     Serial.println("Looks like a buggy temp, suspend. Temp: " + String(temp, 3));
   }
